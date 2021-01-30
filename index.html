@@ -51,23 +51,23 @@
             </div>
             <div class="input-group f-class">
                 <div>
-                    <label for="">First Class ($ <span id="totalFirstClassCost">150</span> )</label>
+                    <label for="">First Class ($ <span id="firstClass-total">150</span> )</label>
                     <input id="firstClass-count" class="inp-style inp-width" type="text" name="" value="1">
                 </div>
                 <div class="plus-minus-btn">
-                    <p> <span onclick="handleFirstClassChange(true)">+</span> <span
-                            onclick="handleFirstClassChange(false)">-</span> </p>
+                    <p> <span onclick="handleCategoryChange('firstClass', true)">+</span> <span
+                            onclick="handleCategoryChange('firstClass', false)">-</span> </p>
                 </div>
             </div>
 
             <div class="input-group f-class">
                 <div>
-                    <label for="">Economy ($<span id="totalEconomyClassCost">100</span>)</label>
+                    <label for="">Economy ($<span id="economyClass-total">100</span>)</label>
                     <input id="economyClass-count" class="inp-style inp-width" type="text" name="" value="1">
                 </div>
                 <div class="plus-minus-btn">
-                    <p> <span onclick="handleEconomyClassChange(true)">+</span> <span
-                            onclick="handleEconomyClassChange(false)">-</span> </p>
+                    <p> <span onclick="handleCategoryChange('economyClass', true)">+</span> <span
+                            onclick="handleCategoryChange('economyClass', false)">-</span> </p>
                 </div>
             </div>
             <div class="calculations">
@@ -94,7 +94,7 @@
                         <h4>Total</h4>
                     </div>
                     <div class="right">
-                        <p>$<span id="grandTotal">50</span></p>
+                        <p>$<span id="grandTotal">550</span></p>
                     </div>
                 </div>
             </div>
@@ -109,41 +109,83 @@
         </div>
 
         <script>
+            function handleCategoryChange(category, isIncrease) {
+                var categoryInput = document.getElementById(category + '-count');
+                var categoryCount = parseInt(categoryInput.value);
+                var updateCategoryCount = 0;
+                if (categoryCount > 0 && isIncrease == false) {
+                    updateCategoryCount = categoryCount - 1;
+                }
+                if (isIncrease == true) {
+                    updateCategoryCount = categoryCount + 1;
+                }
+                categoryInput.value = updateCategoryCount;
+                // updateCategoryTotal = 150 * updateCategoryCount;
+                var updateCategoryTotal = 0;
+                if (category == 'firstClass') {
+                    updateCategoryTotal = 150 * updateCategoryCount;
+                }
+                if (category == 'economyClass') {
+                    updateCategoryTotal = 100 * updateCategoryCount;
+                }
+
+                document.getElementById(category + '-total').innerText = updateCategoryTotal;
+
+                calculateTotal();
+            }
+
+            function calculateTotal() {
+                var firstClassInput = document.getElementById('firstClass-count');
+                var firstClassCount = parseInt(firstClassInput.value);
+
+                var economyClassInput = document.getElementById('economyClass-count');
+                var economyClassCount = parseInt(economyClassInput.value);
+
+                var subTotalFare = firstClassCount * 150 + economyClassCount * 100;
+                document.getElementById('subTotalFare').innerText = subTotalFare;
+
+                var vatAmount = subTotalFare * 0.1;
+                document.getElementById('vatAmount').innerText = vatAmount;
+
+                var grandTotal = subTotalFare + vatAmount;
+                document.getElementById('grandTotal').innerText = grandTotal;
+            }
             // document.getElementById('firstClass-increase').addEventListener('click', function () {
             //     handleFirstClassChange(true);
             // });
             // document.getElementById('firstClass-decrease').addEventListener('click', function () {
             //     handleFirstClassChange(false);
             // });      
-            function handleFirstClassChange(isIncrease) {
-                var firstClassInput = document.getElementById('firstClass-count');
-                var firstClassCount = parseInt(firstClassInput.value);
-                var updateFirstClassCount = 0;
-                if (firstClassCount > 0 && isIncrease == false) {
-                    updateFirstClassCount = firstClassCount - 1;
-                }
-                if (isIncrease == true) {
-                    updateFirstClassCount = firstClassCount + 1;
-                }
-                firstClassInput.value = updateFirstClassCount;
-                var updateFirstClassTotal = 150 * updateFirstClassCount;
-                document.getElementById('totalFirstClassCost').innerText = updateFirstClassTotal;
-            }
 
-            function handleEconomyClassChange(isIncrease) {
-                var economyClassInput = document.getElementById('economyClass-count');
-                var economyClassCount = parseInt(economyClassInput.value);
-                var updateEconomyClassCount = 0;
-                if (economyClassCount > 0 && isIncrease == false) {
-                    updateEconomyClassCount = economyClassCount - 1;
-                }
-                if (isIncrease == true) {
-                    updateEconomyClassCount = economyClassCount + 1;
-                }
-                economyClassInput.value = updateEconomyClassCount;
-                var updateEconomyClassTotal = 100 * updateEconomyClassCount;
-                document.getElementById('totalEconomyClassCost').innerText = updateEconomyClassTotal;
-            }
+            // function handleFirstClassChange(isIncrease) {
+            //     var firstClassInput = document.getElementById('firstClass-count');
+            //     var firstClassCount = parseInt(firstClassInput.value);
+            //     var updateFirstClassCount = 0;
+            //     if (firstClassCount > 0 && isIncrease == false) {
+            //         updateFirstClassCount = firstClassCount - 1;
+            //     }
+            //     if (isIncrease == true) {
+            //         updateFirstClassCount = firstClassCount + 1;
+            //     }
+            //     firstClassInput.value = updateFirstClassCount;
+            //     var updateFirstClassTotal = 150 * updateFirstClassCount;
+            //     document.getElementById('firstClass-total').innerText = updateFirstClassTotal;
+            // }
+
+            // function handleEconomyClassChange(isIncrease) {
+            //     var economyClassInput = document.getElementById('economyClass-count');
+            //     var economyClassCount = parseInt(economyClassInput.value);
+            //     var updateEconomyClassCount = 0;
+            //     if (economyClassCount > 0 && isIncrease == false) {
+            //         updateEconomyClassCount = economyClassCount - 1;
+            //     }
+            //     if (isIncrease == true) {
+            //         updateEconomyClassCount = economyClassCount + 1;
+            //     }
+            //     economyClassInput.value = updateEconomyClassCount;
+            //     var updateEconomyClassTotal = 100 * updateEconomyClassCount;
+            //     document.getElementById('economyClass-total').innerText = updateEconomyClassTotal;
+            // }
             // First Class input handling starts here
             // document.getElementById('firstClass-increase').addEventListener('click', function () {
             //     var firstClassInput = document.getElementById('firstClass-count');
@@ -190,22 +232,12 @@
 
             // Total Fare Calculation Starts Here
 
-            var firstClassInput = document.getElementById('firstClass-count');
-            var firstClassCount = parseInt(firstClassInput.value);
+            
+            // var vatAmount = subTotalFare * 0.1;
+            // document.getElementById('vatAmount').innerText = vatAmount;
 
-            var economyClassInput = document.getElementById('economyClass-count');
-            var economyClassCount = parseInt(economyClassInput.value);
-
-
-
-            var subTotalFare = firstClassCount * 150 + economyClassCount * 100;
-            document.getElementById('subTotalFare').innerText = subTotalFare;
-
-            var vatAmount = subTotalFare * 0.1;
-            document.getElementById('vatAmount').innerText = vatAmount;
-
-            var grandTotal = subTotalFare + vatAmount;
-            document.getElementById('grandTotal').innerText = grandTotal;
+            // var grandTotal = subTotalFare + vatAmount;
+            // document.getElementById('grandTotal').innerText = grandTotal;
 
             // function calculateTotal(){
             //     var firstClassInput = document.getElementById('firstClass-count');
